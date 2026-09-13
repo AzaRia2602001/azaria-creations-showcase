@@ -3,13 +3,45 @@ import { useEffect, useState, type FormEvent } from "react";
 import {
   ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, Check,
   ChevronRight, Code2, ExternalLink, GraduationCap, Layers3, MapPin,
-  Menu, MonitorSmartphone, Palette, Send, ShieldCheck, X,
+  Menu, MonitorSmartphone, Paintbrush, Palette, Send, ShieldCheck, X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { projects, type Project } from "@/data/projects";
 import msnba from "@/assets/MSNBA.png.asset.json";
+import portrait from "@/assets/portrait.png.asset.json";
 
 const MSNBA_URL = "https://msnba-web.ai.studio";
+
+function useTheme() {
+  const [theme, setTheme] = useState<"blue" | "orange">("blue");
+  useEffect(() => {
+    const saved = localStorage.getItem("portfolio-theme");
+    if (saved === "orange" || saved === "blue") setTheme(saved);
+  }, []);
+  useEffect(() => {
+    document.documentElement.classList.toggle("theme-orange", theme === "orange");
+    localStorage.setItem("portfolio-theme", theme);
+  }, [theme]);
+  return { theme, toggle: () => setTheme(theme === "blue" ? "orange" : "blue") };
+}
+
+function ThemeToggle({ theme, toggle }: { theme: string; toggle: () => void }) {
+  return (
+    <button
+      onClick={toggle}
+      aria-label={theme === "blue" ? "Passer au thème orange" : "Passer au thème bleu et violet"}
+      title={theme === "blue" ? "Thème orange" : "Thème bleu / violet"}
+      className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+    >
+      <Paintbrush className="size-3.5 text-primary" />
+      <span className="hidden sm:inline">{theme === "blue" ? "Bleu / violet" : "Orange"}</span>
+      <span className="flex gap-1">
+        <span className="size-2.5 rounded-full bg-primary" />
+        <span className="size-2.5 rounded-full bg-accent" />
+      </span>
+    </button>
+  );
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -117,6 +149,7 @@ function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selected, setSelected] = useState<Project | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const { theme, toggle } = useTheme();
   const submit = (event: FormEvent) => { event.preventDefault(); setSubmitted(true); };
   const [featured, ...others] = projects;
 
@@ -126,6 +159,7 @@ function Portfolio() {
         <a href="#accueil" className="font-display text-lg font-semibold tracking-tight">GJA<span className="text-primary">.</span></a>
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Navigation principale">{nav.map(([label, id]) => <a key={id} href={`#${id}`} className="text-sm text-muted-foreground transition-colors hover:text-foreground">{label}</a>)}</nav>
         <div className="flex items-center gap-3">
+          <ThemeToggle theme={theme} toggle={toggle} />
           <a href={MSNBA_URL} target="_blank" rel="noreferrer" className="hidden items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-primary sm:inline-flex">MSNBA <ArrowUpRight className="size-3.5" /></a>
           <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Ouvrir le menu" aria-expanded={menuOpen}>{menuOpen ? <X /> : <Menu />}</Button>
         </div>
@@ -134,8 +168,10 @@ function Portfolio() {
     </header>
 
     <main>
-      <section id="accueil" className="border-b border-border pt-16">
-        <div className="mx-auto max-w-4xl px-5 py-24 text-center md:py-36 lg:px-8">
+      <section id="accueil" className="relative overflow-hidden border-b border-border pt-16">
+        <img src={portrait.url} alt="Portrait de Guehi Jean Azaria" className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[50%_25%] opacity-55 md:object-[75%_22%]" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/95 via-background/80 to-background" />
+        <div className="relative mx-auto max-w-4xl px-5 py-24 text-center md:py-36 lg:px-8">
           <div className="reveal">
             <p className="font-mono text-xs tracking-[0.3em] text-primary">PORTFOLIO — GUEHI JEAN AZARIA</p>
             <h1 className="mt-8 font-display text-5xl font-semibold leading-[1.03] tracking-tight md:text-7xl">Guehi Jean Azaria</h1>
@@ -146,11 +182,12 @@ function Portfolio() {
               <Button asChild><a href="#projets">Voir mes projets</a></Button>
               <Button asChild variant="outline"><a href="#contact">Me contacter</a></Button>
             </div>
-            <a href={MSNBA_URL} target="_blank" rel="noreferrer" className="mt-8 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-primary">Découvrir MSNBA →</a>
+            <a href={MSNBA_URL} target="_blank" rel="noreferrer" className="mt-8 flex items-center justify-center gap-1 text-sm text-muted-foreground transition-colors hover:text-primary">Découvrir MSNBA →</a>
             <p className="mt-10 inline-flex items-center gap-2 text-xs text-muted-foreground"><MapPin className="size-3.5 text-primary" /> Abidjan, Côte d’Ivoire</p>
           </div>
         </div>
       </section>
+
 
       <section id="a-propos" className="border-b border-border py-24">
         <div className="mx-auto max-w-6xl px-5 lg:px-8">
