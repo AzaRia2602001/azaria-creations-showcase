@@ -169,9 +169,9 @@ function Portfolio() {
 
     <main>
       <section id="accueil" className="relative overflow-hidden border-b border-border pt-16">
-        <img src={portrait.url} alt="Portrait de Guehi Jean Azaria" className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[50%_25%] opacity-25 md:object-[75%_25%]" />
-        <div className="pointer-events-none absolute inset-0 bg-background/70" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background via-background/60 to-background" />
+        <img src={portrait.url} alt="Portrait de Guehi Jean Azaria" className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[50%_25%] opacity-45 md:object-[75%_22%]" />
+        <div className="pointer-events-none absolute inset-0 bg-background/55" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background via-background/55 to-background" />
         <div className="relative mx-auto max-w-4xl px-5 py-24 text-center md:py-36 lg:px-8">
           <div className="reveal">
             <p className="font-mono text-xs tracking-[0.3em] text-primary">PORTFOLIO — GUEHI JEAN AZARIA</p>
@@ -183,7 +183,7 @@ function Portfolio() {
               <Button asChild><a href="#projets">Voir mes projets</a></Button>
               <Button asChild variant="outline"><a href="#contact">Me contacter</a></Button>
             </div>
-            <a href={MSNBA_URL} target="_blank" rel="noreferrer" className="mt-8 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-primary">Découvrir MSNBA →</a>
+            <a href={MSNBA_URL} target="_blank" rel="noreferrer" className="mt-8 flex items-center justify-center gap-1 text-sm text-muted-foreground transition-colors hover:text-primary">Découvrir MSNBA →</a>
             <p className="mt-10 inline-flex items-center gap-2 text-xs text-muted-foreground"><MapPin className="size-3.5 text-primary" /> Abidjan, Côte d’Ivoire</p>
           </div>
         </div>
