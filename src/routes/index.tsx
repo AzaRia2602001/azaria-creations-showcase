@@ -3,13 +3,45 @@ import { useEffect, useState, type FormEvent } from "react";
 import {
   ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, Check,
   ChevronRight, Code2, ExternalLink, GraduationCap, Layers3, MapPin,
-  Menu, MonitorSmartphone, Palette, Send, ShieldCheck, X,
+  Menu, MonitorSmartphone, Paintbrush, Palette, Send, ShieldCheck, X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { projects, type Project } from "@/data/projects";
 import msnba from "@/assets/MSNBA.png.asset.json";
+import portrait from "@/assets/portrait.png.asset.json";
 
 const MSNBA_URL = "https://msnba-web.ai.studio";
+
+function useTheme() {
+  const [theme, setTheme] = useState<"blue" | "orange">("blue");
+  useEffect(() => {
+    const saved = localStorage.getItem("portfolio-theme");
+    if (saved === "orange" || saved === "blue") setTheme(saved);
+  }, []);
+  useEffect(() => {
+    document.documentElement.classList.toggle("theme-orange", theme === "orange");
+    localStorage.setItem("portfolio-theme", theme);
+  }, [theme]);
+  return { theme, toggle: () => setTheme(theme === "blue" ? "orange" : "blue") };
+}
+
+function ThemeToggle({ theme, toggle }: { theme: string; toggle: () => void }) {
+  return (
+    <button
+      onClick={toggle}
+      aria-label={theme === "blue" ? "Passer au thème orange" : "Passer au thème bleu et violet"}
+      title={theme === "blue" ? "Thème orange" : "Thème bleu / violet"}
+      className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+    >
+      <Paintbrush className="size-3.5 text-primary" />
+      <span className="hidden sm:inline">{theme === "blue" ? "Bleu / violet" : "Orange"}</span>
+      <span className="flex gap-1">
+        <span className="size-2.5 rounded-full bg-primary" />
+        <span className="size-2.5 rounded-full bg-accent" />
+      </span>
+    </button>
+  );
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
