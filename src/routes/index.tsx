@@ -149,6 +149,7 @@ function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selected, setSelected] = useState<Project | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const { theme, toggle } = useTheme();
   const submit = (event: FormEvent) => { event.preventDefault(); setSubmitted(true); };
   const [featured, ...others] = projects;
 
@@ -158,6 +159,7 @@ function Portfolio() {
         <a href="#accueil" className="font-display text-lg font-semibold tracking-tight">GJA<span className="text-primary">.</span></a>
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Navigation principale">{nav.map(([label, id]) => <a key={id} href={`#${id}`} className="text-sm text-muted-foreground transition-colors hover:text-foreground">{label}</a>)}</nav>
         <div className="flex items-center gap-3">
+          <ThemeToggle theme={theme} toggle={toggle} />
           <a href={MSNBA_URL} target="_blank" rel="noreferrer" className="hidden items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-primary sm:inline-flex">MSNBA <ArrowUpRight className="size-3.5" /></a>
           <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Ouvrir le menu" aria-expanded={menuOpen}>{menuOpen ? <X /> : <Menu />}</Button>
         </div>
@@ -166,8 +168,11 @@ function Portfolio() {
     </header>
 
     <main>
-      <section id="accueil" className="border-b border-border pt-16">
-        <div className="mx-auto max-w-4xl px-5 py-24 text-center md:py-36 lg:px-8">
+      <section id="accueil" className="relative overflow-hidden border-b border-border pt-16">
+        <img src={portrait.url} alt="Portrait de Guehi Jean Azaria" className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[50%_25%] opacity-25 md:object-[75%_25%]" />
+        <div className="pointer-events-none absolute inset-0 bg-background/70" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background via-background/60 to-background" />
+        <div className="relative mx-auto max-w-4xl px-5 py-24 text-center md:py-36 lg:px-8">
           <div className="reveal">
             <p className="font-mono text-xs tracking-[0.3em] text-primary">PORTFOLIO — GUEHI JEAN AZARIA</p>
             <h1 className="mt-8 font-display text-5xl font-semibold leading-[1.03] tracking-tight md:text-7xl">Guehi Jean Azaria</h1>
@@ -183,6 +188,7 @@ function Portfolio() {
           </div>
         </div>
       </section>
+
 
       <section id="a-propos" className="border-b border-border py-24">
         <div className="mx-auto max-w-6xl px-5 lg:px-8">
